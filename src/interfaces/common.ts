@@ -4,7 +4,7 @@
  * @作者: 陈杰
  * @Date: 2019-10-23 21:12:06
  * @LastEditors: 阮旭松
- * @LastEditTime: 2020-05-15 18:22:35
+ * @LastEditTime: 2021-02-24 16:43:09
  */
 
 import echarts from 'echarts';
@@ -13,6 +13,30 @@ interface AngleSeriesData {
   name: string;
   min: number;
   max: number;
+}
+
+export interface CustomWindow extends Window {
+  requestConfig: {
+    withCredentials: boolean;
+    getToken: () => Promise<string>;
+  };
+  authConfig: {
+    url: string;
+    client_id: string;
+    client_secret: string;
+    password_min: number;
+    password_max: number;
+    company: number;
+  };
+  chartConfig: {
+    theme: string;
+    themeConfig?: {
+      // 对应主题色
+      [name: string]: {
+        [name: string]: string | string[] | number | number[] | object;
+      };
+    };
+  };
 }
 
 export interface AngleSeries {
