@@ -17,6 +17,9 @@ module.exports = {
     'no-undef': 0,
     'no-console': 0,
     'dot-notation': 0,
-    'prefer-template': 0
-  }
+    'prefer-template': 0,
+    'no-nested-ternary': 0,
+    'no-eval': 0,
+    'react/no-danger': 0,
+  },
 };
