@@ -60,15 +60,27 @@ export default () => {
                 top: 20,
               },
               tooltip: {},
-              dataset: {
-                source: [
-                  ['product', '2015', '2016', '2017'],
-                  ['Matcha Latte', 43.3, 85.8, 93.7],
-                  ['Milk Tea', 83.1, 73.4, 55.1],
-                  ['Cheese Cocoa', 86.4, 65.2, 82.5],
-                  ['Walnut Brownie', 72.4, 53.9, 39.1],
-                ],
-              },
+              dataset: [
+                {
+                  source: [
+                    ['product', '2015', '2016', '2017'],
+                    ['Matcha Latte', 43.3, 85.8, 93.7],
+                    ['Milk Tea', 83.1, 73.4, 55.1],
+                    ['Cheese Cocoa', 86.4, 65.2, 82.5],
+                    ['Walnut Brownie', 72.4, 53.9, 39.1],
+                  ],
+                },
+                {
+                  datasetId: '2',
+                  transform: {
+                    type: 'filter',
+                    config: {
+                      dimension: '2015',
+                      '>': 80,
+                    },
+                  },
+                },
+              ],
               xAxis: {
                 type: 'category',
               },
@@ -77,8 +89,6 @@ export default () => {
                 {
                   type: 'bar',
                 },
-                { type: 'bar' },
-                { type: 'bar' },
               ],
             }}
             lazyUpdate
@@ -174,7 +184,6 @@ export default () => {
                 tooltip: {},
                 dataset: [
                   {
-                    // 这个 dataset 的 index 是 `0`。
                     source: [
                       ['Product', 'Sales', 'Price', 'Year'],
                       ['Cake', 123, 32, 2011],
@@ -191,30 +200,15 @@ export default () => {
                   },
                   {
                     id: 'test',
-                    // 这个 dataset 的 index 是 `1`。
-                    // 这个 `transform` 配置，表示，此 dataset 的数据，来自于此 transform 的结果。
                     transform: {
                       type: 'filter',
                       config: { dimension: 'Year', '=': 2011 },
                     },
-                    // 我们还可以设置这些可选的属性： `fromDatasetIndex` 或 `fromDatasetId`。
-                    // 这些属性，指定了，transform 的输入，来自于哪个 dataset。例如，
-                    // `fromDatasetIndex: 0` 表示输入来自于 index 为 `0` 的 dataset 。又例如，
-                    // `fromDatasetId: 'a'` 表示输入来自于 `id: 'a'` 的 dataset。
-                    // 当这些属性都不指定时，默认认为，输入来自于 index 为 `0` 的 dataset 。
                   },
                   {
-                    // 这个 dataset 的 index 是 `2`。
-                    // 同样，这里因为 `fromDatasetIndex` 和 `fromDatasetId` 都没有被指定，
-                    // 那么默认输入来自于 index 为 `0` 的 dataset 。
                     fromDatasetIndex,
                     transform: {
-                      // 这个类型为 "filter" 的 transform 能够遍历并筛选出满足条件的数据项。
                       type: transformType,
-                      // 每个 transform 如果需要有配置参数的话，都须配置在 `config` 里。
-                      // 在这个 "filter" transform 中，`config` 用于指定筛选条件。
-                      // 下面这个筛选条件是：选出维度（ dimension ）'Year' 中值为 2012 的所有
-                      // 数据项。
                       config: {
                         dimension,
                         [dimensionFilter]:
@@ -232,8 +226,6 @@ export default () => {
                     type: 'pie',
                     radius: 50,
                     center: ['30%', '50%'],
-                    // 这个饼图系列，引用了 index 为 `1` 的 dataset 。也就是，引用了上述
-                    // 2011 年那个 "filter" transform 的结果。
                     datasetIndex: 1,
                   },
                   {
@@ -251,25 +243,38 @@ export default () => {
         <Card title="5.encode 映射" className={styles.longCardWrap}>
           <ReactECharts
             option={{
-              dataset: {
-                source: [
-                  ['score', 'amount', 'product'],
-                  [89.3, 58212, 'Latte'],
-                  [57.1, 78254, 'Tea'],
-                  [74.4, 41032, 'Cocoa'],
-                  [50.1, 12755, 'Cheese'],
-                  [89.7, 20145, 'Cocoa'],
-                  [68.1, 79146, 'Tea'],
-                  [19.6, 91852, 'Orange'],
-                  [10.6, 101852, 'Lemon'],
-                  [32.7, 20112, 'Brownie'],
-                ],
-              },
+              dataset: [
+                {
+                  source: [
+                    ['score', 'amount', 'product'],
+                    [89.3, 58212, 'Latte'],
+                    [57.1, 78254, 'Tea'],
+                    [74.4, 41032, 'Cocoa'],
+                    [50.1, 12755, 'Cheese'],
+                    [89.7, 20145, 'Cocoa'],
+                    [68.1, 79146, 'Tea'],
+                    [19.6, 91852, 'Orange'],
+                    [10.6, 101852, 'Lemon'],
+                    [32.7, 20112, 'Brownie'],
+                  ],
+                },
+                {
+                  datasetId: '2',
+                  transform: {
+                    type: 'filter',
+                    config: {
+                      dimension: 'score',
+                      '>': 80,
+                    },
+                  },
+                },
+              ],
               tooltip: {},
               xAxis: { type: encodeX === 'product' ? 'category' : 'value' },
               yAxis: { type: encodeY === 'product' ? 'category' : 'value' },
               series: [
                 {
+                  fromDatasetId: '2',
                   type: 'bar',
                   encode: {
                     x: encodeX,
